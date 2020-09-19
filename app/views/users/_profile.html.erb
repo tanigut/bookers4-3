@@ -1,0 +1,48 @@
+<table class="table">
+		<tr><%= attachment_image_tag(user, :profile_image, :fill, 100, 100, fallback: "no_image.jpg") %></tr>
+
+		<tr>
+			<th>name</th>
+			<th><%= user.name %></th>
+		</tr>
+
+		<tr>
+			<th>introduction</th>
+			<th><%= user.introduction %></th>
+		</tr>
+
+        <tr>
+        	<th>follows</th>
+		    <th><%= link_to relationship_path(user), class: "user_#{user.id}" do %>
+		    	<%= user.follower.count %>
+		        <% end %>
+		    </th>
+	    </tr>
+
+        <tr>
+        	<th>followers</th>
+	        <th>
+	        	<%= link_to relationship_path(user), class: "user_#{user.id}" do %>
+	        	<%= user.followed.count %>
+	        	<% end %>
+	        </th>
+	    </tr>
+</table>
+
+<div class="row">
+	<%= link_to '', edit_user_path(user), class: "col-xs-12 btn btn-default glyphicon glyphicon-wrench edit_user_#{user.id}" %>
+</div>
+
+<br>
+
+<div class="row">
+    <% unless current_user == user %>
+    <% if current_user.following?(user) %>
+    <% User.all.where.not(id: current_user.id).find do |user| %>
+    <%= link_to 'フォロー外す', unfollow_path(user.id), method: :POST, class: 'btn btn-primary btn-block' %>
+    <% end %>
+    <% else %>
+    <%= link_to 'フォローする', follow_path(user.id), method: :POST, class: 'btn btn-success btn-block' %>
+    <% end %>
+    <% end %>
+</div>
