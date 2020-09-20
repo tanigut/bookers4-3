@@ -33,9 +33,7 @@
                     <td>
                       <% unless current_user == user %>
                       <% if current_user.following?(user) %>
-                      <% User.all.where.not(id: current_user.id).find do |user| %>
                       <%= link_to 'フォロー外す', unfollow_path(user.id), method: :POST %>
-                      <% end %>
                       <% else %>
                       <%= link_to 'フォローする', follow_path(user.id), method: :POST %>
                       <% end %>
